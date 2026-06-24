@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="LionHeart — Premium elite gym offering General Fitness, Bodybuilding, and Martial Arts." />
+    <title>LionHeart Gym</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&family=Noto+Sans+Ethiopic:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Three.js CDN -->
+     <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+</script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+
+  <!-- ─────────────────────────────────────────
+       LOADER
+  ───────────────────────────────────────── -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader__inner">
+      <span class="loader__logo">LION<em>HEART</em></span>
+      <div class="loader__bar"><div class="loader__bar-fill"></div></div>
+    </div>
+  </div>
+
+    <!-- ─────────────────────────────────────────
+         NAVBAR
+    ───────────────────────────────────────── -->
+    <header class="navbar" role="banner">
+      <div class="navbar__inner">
+
+        <a href="#hero" class="navbar__logo" aria-label="LionHeart Home">
+          <span class="navbar__logo-icon" aria-hidden="true">&#9650;</span>
+          <span class="navbar__logo-text">LION<em>HEART</em></span>
+        </a>
+
+        <nav class="navbar__nav" aria-label="Main navigation">
+          <ul class="navbar__links" role="list">
+            <li><a href="#programs" class="navbar__link">Programs</a></li>
+            <li><a href="#trainers" class="navbar__link">Trainers</a></li>
+            <li><a href="#pricing" class="navbar__link">Membership</a></li>
+            <li><a href="#testimonials" class="navbar__link">Reviews</a></li>
+            <li><a href="#contact" class="navbar__link">Contact</a></li>
+          </ul>
+        </nav>
+
+        <button class="navbar__menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+      </div>
+
+      <!-- Mobile menu -->
+      <div class="navbar__mobile-menu" id="mobile-menu" aria-hidden="true">
+        <ul class="navbar__mobile-links" role="list">
+          <li><a href="#programs" class="navbar__mobile-link">Programs</a></li>
+          <li><a href="#trainers" class="navbar__mobile-link">Trainers</a></li>
+          <li><a href="#pricing" class="navbar__mobile-link">Membership</a></li>
+          <li><a href="#testimonials" class="navbar__mobile-link">Reviews</a></li>
+          <li><a href="#contact" class="navbar__mobile-link">Contact</a></li>
+        </ul>
+      </div>
+    </header>
+
+
+    <!-- ─────────────────────────────────────────
+         HERO
+    ───────────────────────────────────────── -->
+    <section id="hero" class="hero" aria-label="Hero">
+
+      <!-- Three.js canvas renders here -->
+      <canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+      <!-- Atmosphere overlays -->
+      <div class="hero__vignette" aria-hidden="true"></div>
+      <div class="hero__grain"    aria-hidden="true"></div>
+      <div class="hero__fog"      aria-hidden="true"></div>
+
+      <!-- Hero content -->
+      <div class="hero__content">
+        <p class="hero__eyebrow" lang="am">ኢትዮጵያ · ADDIS ABABA</p>
+
+        <h1 class="hero__title">
+          <span class="hero__title-line">LION</span>
+          <span class="hero__title-line hero__title-line--accent">HEART</span>
+        </h1>
+
+        <p class="hero__tagline" lang="am">
+          የአንበሳ ልብ ያለው ብቻ ይቀጥላል
+        </p>
+        <p class="hero__tagline-en">
+          Only those with the heart of a lion endure.
+        </p>
+
+        <div class="hero__divider" aria-hidden="true"></div>
+
+        <p class="hero__sub">
+          Premium fitness. Elite standards. No compromises.
+        </p>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div class="hero__scroll-indicator" aria-hidden="true">
+        <span class="hero__scroll-line"></span>
+        <span class="hero__scroll-label">SCROLL</span>
+      </div>
+
+    </section>
+
+
+    <!-- ─────────────────────────────────────────
+         STATS BAR
+    ───────────────────────────────────────── -->
+    <section class="stats" aria-label="Gym statistics">
+      <div class="stats__inner">
+
+        <div class="stats__item">
+          <span class="stats__number" data-target="1200">0</span>
+          <span class="stats__label">Elite Members</span>
+        </div>
+
+        <div class="stats__divider" aria-hidden="true"></div>
+
+        <div class="stats__item">
+          <span class="stats__number" data-target="12">0</span>
+          <span class="stats__label">Years of Excellence</span>
+        </div>
+
+        <div class="stats__divider" aria-hidden="true"></div>
+
+        <div class="stats__item">
+          <span class="stats__number" data-target="340">0</span>
+          <span class="stats__label">Champions Trained</span>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ─────────────────────────────────────────
+         PROGRAMS
+    ───────────────────────────────────────── -->
+    <section id="programs" class="programs reveal-section" aria-labelledby="programs-heading">
+      <div class="section__inner">
+
+        <header class="section__header">
+          <p class="section__eyebrow">What We Offer</p>
+          <h2 class="section__title" id="programs-heading">Our Programs</h2>
+          <p class="section__desc">
+            Three disciplines. One philosophy — push beyond what you thought possible.
+          </p>
+        </header>
+
+        <div class="programs__grid">
+
+          <article class="program-card reveal-item">
+            <div class="program-card__icon" aria-hidden="true">
+              <!-- General Fitness icon: flame -->
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M24 4C24 4 14 16 14 26a10 10 0 0020 0c0-6-4-12-4-12s-1 6-6 8c0 0 4-10 0-22z" fill="currentColor"/>
+              </svg>
+            </div>
+            <h3 class="program-card__title">General Fitness</h3>
+            <p class="program-card__desc">
+              Build the foundation. Endurance, mobility, and conditioning programs tailored for every level — from first steps to peak performance.
+            </p>
+            <span class="program-card__tag">All Levels</span>
+          </article>
+
+          <article class="program-card program-card--featured reveal-item">
+            <div class="program-card__icon" aria-hidden="true">
+              <!-- Bodybuilding icon: dumbbell -->
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="4"  y="20" width="6"  height="8" rx="2" fill="currentColor"/>
+                <rect x="38" y="20" width="6"  height="8" rx="2" fill="currentColor"/>
+                <rect x="10" y="17" width="6"  height="14" rx="2" fill="currentColor"/>
+                <rect x="32" y="17" width="6"  height="14" rx="2" fill="currentColor"/>
+                <rect x="16" y="22" width="16" height="4"  rx="2" fill="currentColor"/>
+              </svg>
+            </div>
+            <h3 class="program-card__title">Bodybuilding</h3>
+            <p class="program-card__desc">
+              Sculpt your physique with precision. Our elite coaches guide structured hypertrophy cycles to forge the body you have always envisioned.
+            </p>
+            <span class="program-card__tag">Advanced</span>
+          </article>
+
+          <article class="program-card reveal-item">
+            <div class="program-card__icon" aria-hidden="true">
+              <!-- Martial Arts icon: fist -->
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="14" y="18" width="8" height="12" rx="3" fill="currentColor"/>
+                <rect x="22" y="16" width="8" height="14" rx="3" fill="currentColor"/>
+                <rect x="30" y="18" width="6" height="12" rx="3" fill="currentColor"/>
+                <rect x="10" y="28" width="28" height="6"  rx="3" fill="currentColor"/>
+                <rect x="8"  y="32" width="8"  height="8"  rx="3" fill="currentColor"/>
+              </svg>
+            </div>
+            <h3 class="program-card__title">Martial Arts</h3>
+            <p class="program-card__desc">
+              Discipline the mind. Sharpen the body. Master striking, grappling, and combat strategy under world-class instructors.
+            </p>
+            <span class="program-card__tag">All Levels</span>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ─────────────────────────────────────────
+         TRAINERS
+    ───────────────────────────────────────── -->
+    <section id="trainers" class="trainers reveal-section" aria-labelledby="trainers-heading">
+      <div class="section__inner">
+
+        <header class="section__header">
+          <p class="section__eyebrow">The Elite</p>
+          <h2 class="section__title" id="trainers-heading">Meet Our Trainers</h2>
+          <p class="section__desc">
+            Hand-picked. World-certified. Relentlessly committed to your transformation.
+          </p>
+        </header>
+
+        <div class="trainers__grid">
+
+          <article class="trainer-card reveal-item">
+            <div class="trainer-card__avatar" aria-hidden="true">
+              <div class="trainer-card__avatar-placeholder">AK</div>
+            </div>
+            <div class="trainer-card__body">
+              <h3 class="trainer-card__name">Amir Kebede</h3>
+              <p class="trainer-card__role">Head of Bodybuilding</p>
+              <p class="trainer-card__bio">
+                Former national champion with 14 years on the competitive stage. Amir's method blends periodisation science with old-school iron discipline.
+              </p>
+              <ul class="trainer-card__certs" aria-label="Certifications">
+                <li>IFBB Elite Pro</li>
+                <li>NSCA-CSCS</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="trainer-card trainer-card--featured reveal-item">
+            <div class="trainer-card__avatar" aria-hidden="true">
+              <div class="trainer-card__avatar-placeholder">ST</div>
+            </div>
+            <div class="trainer-card__body">
+              <h3 class="trainer-card__name">Sara Tadesse</h3>
+              <p class="trainer-card__role">General Fitness Director</p>
+              <p class="trainer-card__bio">
+                Olympic-level conditioning coach who has trained national track athletes. Sara engineers programs that build real-world strength from the ground up.
+              </p>
+              <ul class="trainer-card__certs" aria-label="Certifications">
+                <li>ACSM Certified</li>
+                <li>FMS Specialist</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="trainer-card reveal-item">
+            <div class="trainer-card__avatar" aria-hidden="true">
+              <div class="trainer-card__avatar-placeholder">DH</div>
+            </div>
+            <div class="trainer-card__body">
+              <h3 class="trainer-card__name">Dawit Haile</h3>
+              <p class="trainer-card__role">Martial Arts Master</p>
+              <p class="trainer-card__bio">
+                A decorated Muay Thai and BJJ black belt practitioner who has trained fighters across three continents. Dawit teaches combat as a philosophy of life.
+              </p>
+              <ul class="trainer-card__certs" aria-label="Certifications">
+                <li>BJJ Black Belt</li>
+                <li>Muay Thai Kru</li>
+              </ul>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ─────────────────────────────────────────
+         PRICING
+    ───────────────────────────────────────── -->
+    <section id="pricing" class="pricing reveal-section" aria-labelledby="pricing-heading">
+      <div class="section__inner">
+
+        <header class="section__header">
+          <p class="section__eyebrow">Membership</p>
+          <h2 class="section__title" id="pricing-heading">Choose Your Tier</h2>
+          <p class="section__desc">
+            Every tier is a commitment to excellence. Choose the level that matches your ambition.
+          </p>
+        </header>
+
+        <div class="pricing__grid">
+
+          <!-- Bronze -->
+          <article class="pricing-card reveal-item" aria-label="Bronze membership">
+            <div class="pricing-card__header">
+              <span class="pricing-card__tier">Bronze</span>
+              <div class="pricing-card__price">
+                <span class="pricing-card__currency">ETB</span>
+                <span class="pricing-card__amount">1,200</span>
+                <span class="pricing-card__period">/ month</span>
+              </div>
+            </div>
+            <ul class="pricing-card__features" role="list">
+              <li class="pricing-card__feature pricing-card__feature--yes">Full gym access (6am – 10pm)</li>
+              <li class="pricing-card__feature pricing-card__feature--yes">Locker room & showers</li>
+              <li class="pricing-card__feature pricing-card__feature--yes">Group fitness classes</li>
+              <li class="pricing-card__feature pricing-card__feature--no">Personal training sessions</li>
+              <li class="pricing-card__feature pricing-card__feature--no">Nutrition consultation</li>
+              <li class="pricing-card__feature pricing-card__feature--no">Recovery & spa access</li>
+            </ul>
+          </article>
+
+          <!-- Silver -->
+          <article class="pricing-card pricing-card--silver reveal-item" aria-label="Silver membership">
+            <div class="pricing-card__header">
+              <span class="pricing-card__tier">Silver</span>
+              <div class="pricing-card__price">
+                <span class="pricing-card__currency">ETB</span>
+                <span class="pricing-card__amount">2,400</span>
+                <span class="pricing-card__period">/ month</span>
+              </div>
+            </div>
+            <ul class="pricing-card__features" role="list">
+              <li class="pricing-card__feature pricing-card__feature--yes">Full gym access (24/7)</li>
+              <li class="pricing-card__feature pricing-card__feature--yes">Locker room & showers</li>
+              <li class="pricing-card__feature pricing-card__feature--yes">All group classes</li>
+              <li class="pricing-card__feature pricing-card__feature--yes">4 personal training sessions</li>
+              <li class="pricing-card__feature pricing-card__feature--yes">Nutrition consultation</li>
+              <li class="pricing-card__feature pricing-card__feature--no">Recovery & spa access</li>
+            </ul>
+          </article>
+
+          <!-- Gold -->
+          <article class="pricing-card pricing-card--gold reveal-item" aria-label="Gold membership">
+            <div class="pricing-card__badge" aria-label="Most popular">ELITE</div>
+            <div class="pricing-card__header">
+              <span class="pricing-card__tier">Gold</span>
+              <div class="pricing-card__price">
+                <span class="pricing-card__currency">ETB</span>
+                <span class="pricing-card__amount">4,800</span>
+                <span class="pricing-card__period">/ month</span>
+              </div>
+            </div>
+            <ul class="pricing-card__features" role="list">
+              <li class="pricing-card__feature pricing-card__feature--yes">Full gym access (24/7)</li>
+              <li class="pricing-card__feature pricing-card__feature--yes">Private locker & concierge</li>
+              <li class="pricing-card__feature pricing-card__feature--yes">All group classes</li>
+              <li class="pricing-card__feature pricing-card__feature--yes">Unlimited personal training</li>
+              <li class="pricing-card__feature pricing-card__feature--yes">Monthly nutrition plan</li>
+              <li class="pricing-card__feature pricing-card__feature--yes">Recovery & spa access</li>
+            </ul>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ─────────────────────────────────────────
+         TESTIMONIALS
+    ───────────────────────────────────────── -->
+    <section id="testimonials" class="testimonials reveal-section" aria-labelledby="testimonials-heading">
+      <div class="section__inner">
+
+        <header class="section__header">
+          <p class="section__eyebrow">Their Words</p>
+          <h2 class="section__title" id="testimonials-heading">Member Reviews</h2>
+        </header>
+
+        <div class="testimonials__grid">
+
+          <blockquote class="testimonial-card reveal-item">
+            <p class="testimonial-card__quote">
+              LionHeart is not just a gym. It is a standard. The moment I walked in I knew this was different — the energy, the equipment, the coaches. Nothing else compares in this city.
+            </p>
+            <footer class="testimonial-card__footer">
+              <span class="testimonial-card__name">Yonas Girma</span>
+              <span class="testimonial-card__detail">Gold Member · 3 years</span>
+            </footer>
+          </blockquote>
+
+          <blockquote class="testimonial-card testimonial-card--featured reveal-item">
+            <p class="testimonial-card__quote">
+              I came in wanting to lose weight. I left as a competitor. Sara redesigned how I think about my body and what it's capable of. The results speak for themselves.
+            </p>
+            <footer class="testimonial-card__footer">
+              <span class="testimonial-card__name">Hana Bekele</span>
+              <span class="testimonial-card__detail">Silver Member · 18 months</span>
+            </footer>
+          </blockquote>
+
+          <blockquote class="testimonial-card reveal-item">
+            <p class="testimonial-card__quote">
+              Dawit's martial arts program changed my life. The discipline I learned on the mat followed me into every corner of my daily life. LionHeart builds more than bodies.
+            </p>
+            <footer class="testimonial-card__footer">
+              <span class="testimonial-card__name">Mikael Tesfaye</span>
+              <span class="testimonial-card__detail">Bronze Member · 8 months</span>
+            </footer>
+          </blockquote>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ─────────────────────────────────────────
+         CONTACT
+    ───────────────────────────────────────── -->
+    <section id="contact" class="contact reveal-section" aria-labelledby="contact-heading">
+      <div class="section__inner">
+
+        <header class="section__header">
+          <p class="section__eyebrow">Find Us</p>
+          <h2 class="section__title" id="contact-heading">Get In Touch</h2>
+        </header>
+
+        <div class="contact__grid">
+
+          <div class="contact__info reveal-item">
+            <div class="contact__detail">
+              <span class="contact__detail-label">Location</span>
+              <span class="contact__detail-value">Bole Road, Addis Ababa, Ethiopia</span>
+            </div>
+            <div class="contact__detail">
+              <span class="contact__detail-label">Hours</span>
+              <span class="contact__detail-value">Monday – Sunday · 05:00 – 23:00</span>
+            </div>
+            <div class="contact__detail">
+              <span class="contact__detail-label">Phone</span>
+              <span class="contact__detail-value">+251 911 000 000</span>
+            </div>
+            <div class="contact__detail">
+              <span class="contact__detail-label">Email</span>
+              <span class="contact__detail-value">info@lionheartgym.et</span>
+            </div>
+          </div>
+
+          <div class="contact__socials reveal-item">
+            <p class="contact__socials-label">Follow LionHeart</p>
+            <div class="contact__socials-links">
+              <a href="#" class="contact__social-link" aria-label="Instagram">Instagram</a>
+              <a href="#" class="contact__social-link" aria-label="TikTok">TikTok</a>
+              <a href="#" class="contact__social-link" aria-label="YouTube">YouTube</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ─────────────────────────────────────────
+         FOOTER
+    ───────────────────────────────────────── -->
+    <footer class="footer" role="contentinfo">
+      <div class="footer__inner">
+
+        <div class="footer__brand">
+          <span class="footer__logo">LION<em>HEART</em></span>
+          <p class="footer__tagline" lang="am">የአንበሳ ልብ ያለው ብቻ ይቀጥላል</p>
+        </div>
+
+        <nav class="footer__nav" aria-label="Footer navigation">
+          <a href="#programs">Programs</a>
+          <a href="#trainers">Trainers</a>
+          <a href="#pricing">Membership</a>
+          <a href="#testimonials">Reviews</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <p class="footer__copy">
+          &copy; <span id="footer-year"></span> LionHeart Gym. All rights reserved.
+        </p>
+
+      </div>
+    </footer>
+
+
+    <!-- Single JS file: Three.js scene + all scripts -->
+    <script type="module" src="main.js"></script>
+
+  </body>
+</html>
