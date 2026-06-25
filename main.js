@@ -409,14 +409,16 @@ gsap.registerPlugin(ScrollTrigger);
       mobileMenu.classList.toggle('is-open', isOpen);
       toggle.setAttribute('aria-expanded', String(isOpen));
       mobileMenu.setAttribute('aria-hidden', String(!isOpen));
+      document.body.classList.toggle('menu-open', isOpen);
     });
-
+    
     mobileLinks.forEach(link => {
       link.addEventListener('click', () => {
         toggle.classList.remove('is-open');
         mobileMenu.classList.remove('is-open');
         toggle.setAttribute('aria-expanded', 'false');
         mobileMenu.setAttribute('aria-hidden', 'true');
+        document.body.classList.remove('menu-open');
       });
     });
   }
