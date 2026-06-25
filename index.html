@@ -19,7 +19,9 @@
   {
     "imports": {
       "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+      "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js",
+      "gsap/ScrollTrigger": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger.js"
     }
   }
 </script>
@@ -87,45 +89,72 @@
     ───────────────────────────────────────── -->
     <section id="hero" class="hero" aria-label="Hero">
 
-      <!-- Three.js canvas renders here -->
-      <canvas id="hero-canvas" aria-hidden="true"></canvas>
-
-      <!-- Atmosphere overlays -->
-      <div class="hero__vignette" aria-hidden="true"></div>
-      <div class="hero__grain"    aria-hidden="true"></div>
-      <div class="hero__fog"      aria-hidden="true"></div>
-
-      <!-- Hero content -->
-      <div class="hero__content">
-        <p class="hero__eyebrow" lang="am">ኢትዮጵያ · ADDIS ABABA</p>
-
-        <h1 class="hero__title">
-          <span class="hero__title-line">LION</span>
-          <span class="hero__title-line hero__title-line--accent">HEART</span>
-        </h1>
-
-        <p class="hero__tagline" lang="am">
-          የአንበሳ ልብ ያለው ብቻ ይቀጥላል
-        </p>
-        <p class="hero__tagline-en">
-          Only those with the heart of a lion endure.
-        </p>
-
-        <div class="hero__divider" aria-hidden="true"></div>
-
-        <p class="hero__sub">
-          Premium fitness. Elite standards. No compromises.
-        </p>
+      <!-- Split screen left — images -->
+      <div class="hero__left">
+        <div class="hero__slide active" style="background-image: url('https://res.cloudinary.com/dhoymhers/image/upload/v1782384895/lion_heart_gym_5_y09mhr.jpg')"></div>
+        <div class="hero__slide" style="background-image: url('https://res.cloudinary.com/dhoymhers/image/upload/v1782384897/lion_heart_gym_1_cvuruw.jpg')"></div>
+        <div class="hero__slide" style="background-image: url('https://res.cloudinary.com/dhoymhers/image/upload/v1782384898/lion_heart_gym_3_rgmhzd.jpg')"></div>
+        <div class="hero__slide" style="background-image: url('https://res.cloudinary.com/dhoymhers/image/upload/v1782384898/lion_heart_gym_4_heqivz.jpg')"></div>
+        <div class="hero__slide" style="background-image: url('https://res.cloudinary.com/dhoymhers/image/upload/v1782384899/lion_heart_gym_2_cz2opa.jpg')"></div>
+        <!-- Red edge glow -->
+        <div class="hero__left-glow" aria-hidden="true"></div>
       </div>
 
-      <!-- Scroll indicator -->
-      <div class="hero__scroll-indicator" aria-hidden="true">
-        <span class="hero__scroll-line"></span>
-        <span class="hero__scroll-label">SCROLL</span>
+      <!-- Split screen right — text -->
+      <div class="hero__right">
+        <!-- Atmosphere overlays -->
+        <div class="hero__vignette" aria-hidden="true"></div>
+        <div class="hero__grain"    aria-hidden="true"></div>
+        <div class="hero__fog"      aria-hidden="true"></div>
+
+        <!-- Hero content -->
+        <div class="hero__content">
+          <p class="hero__eyebrow" lang="am">ኢትዮጵያ · ADDIS ABABA</p>
+
+          <h1 class="hero__title">
+            <span class="hero__title-line">LION</span>
+            <span class="hero__title-line hero__title-line--accent">HEART</span>
+          </h1>
+
+          <p class="hero__tagline" lang="am">
+            የአንበሳ ልብ ያለው ብቻ ይቀጥላል
+          </p>
+          <p class="hero__tagline-en">
+            Only those with the heart of a lion endure.
+          </p>
+
+          <div class="hero__divider" aria-hidden="true"></div>
+
+          <p class="hero__sub">
+            Premium fitness. Elite standards. No compromises.
+          </p>
+        </div>
+
+        <!-- Scroll indicator -->
+        <div class="hero__scroll-indicator" aria-hidden="true">
+          <span class="hero__scroll-line"></span>
+          <span class="hero__scroll-label">SCROLL</span>
+        </div>
       </div>
 
-    </section>
+      <!-- Dots -->
+      <div class="hero__dots" aria-hidden="true">
+        <span class="hero__dot active"></span>
+        <span class="hero__dot"></span>
+        <span class="hero__dot"></span>
+        <span class="hero__dot"></span>
+        <span class="hero__dot"></span>
+      </div>
 
+      <!-- Progress bar -->
+      <div class="hero__progress" aria-hidden="true">
+        <div class="hero__progress-bar"></div>
+      </div>
+
+      </section>
+
+    <!-- Three.js background canvas (below hero) -->
+    <canvas id="hero-canvas" aria-hidden="true"></canvas>
 
     <!-- ─────────────────────────────────────────
          STATS BAR
@@ -394,35 +423,59 @@
 
         <div class="testimonials__grid">
 
-          <blockquote class="testimonial-card reveal-item">
-            <p class="testimonial-card__quote">
-              LionHeart is not just a gym. It is a standard. The moment I walked in I knew this was different — the energy, the equipment, the coaches. Nothing else compares in this city.
-            </p>
-            <footer class="testimonial-card__footer">
-              <span class="testimonial-card__name">Yonas Girma</span>
-              <span class="testimonial-card__detail">Gold Member · 3 years</span>
-            </footer>
-          </blockquote>
+          <article class="comment reveal-item">
+            <img class="comment__avatar" src="https://i.pravatar.cc/160?img=12" alt="" />
+            <div class="comment__body">
+              <div class="comment__top">
+                <span class="comment__name">sample_1</span>
+                <span class="comment__badge" aria-label="Verified">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true">
+                    <path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="comment__time">2d ago</span>
+              </div>
+              <p class="comment__text">
+                LionHeart is not just a gym. It is a standard. The moment I walked in I knew this was different — the energy, the equipment, the coaches. Nothing else compares in this city.
+              </p>
+            </div>
+          </article>
 
-          <blockquote class="testimonial-card testimonial-card--featured reveal-item">
-            <p class="testimonial-card__quote">
-              I came in wanting to lose weight. I left as a competitor. Sara redesigned how I think about my body and what it's capable of. The results speak for themselves.
-            </p>
-            <footer class="testimonial-card__footer">
-              <span class="testimonial-card__name">Hana Bekele</span>
-              <span class="testimonial-card__detail">Silver Member · 18 months</span>
-            </footer>
-          </blockquote>
+          <article class="comment reveal-item">
+            <img class="comment__avatar" src="https://i.pravatar.cc/160?img=45" alt="" />
+            <div class="comment__body">
+              <div class="comment__top">
+                <span class="comment__name">sample_2</span>
+                <span class="comment__badge" aria-label="Verified">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true">
+                    <path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="comment__time">5d ago</span>
+              </div>
+              <p class="comment__text">
+                I came in wanting to lose weight. I left as a competitor. Sara redesigned how I think about my body and what it's capable of. The results speak for themselves.
+              </p>
+            </div>
+          </article>
 
-          <blockquote class="testimonial-card reveal-item">
-            <p class="testimonial-card__quote">
-              Dawit's martial arts program changed my life. The discipline I learned on the mat followed me into every corner of my daily life. LionHeart builds more than bodies.
-            </p>
-            <footer class="testimonial-card__footer">
-              <span class="testimonial-card__name">Mikael Tesfaye</span>
-              <span class="testimonial-card__detail">Bronze Member · 8 months</span>
-            </footer>
-          </blockquote>
+          <article class="comment reveal-item">
+            <img class="comment__avatar" src="https://i.pravatar.cc/160?img=33" alt="" />
+            <div class="comment__body">
+              <div class="comment__top">
+                <span class="comment__name">sample_3</span>
+                <span class="comment__badge" aria-label="Verified">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" aria-hidden="true">
+                    <path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="comment__time">1w ago</span>
+              </div>
+              <p class="comment__text">
+                Dawit's martial arts program changed my life. The discipline I learned on the mat followed me into every corner of my daily life. LionHeart builds more than bodies.
+              </p>
+            </div>
+          </article>
 
         </div>
       </div>
