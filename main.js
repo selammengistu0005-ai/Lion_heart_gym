@@ -8,6 +8,10 @@ import { EffectComposer }  from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass }      from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 
+import gsap                from 'gsap';
+import { ScrollTrigger }   from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 /* ─────────────────────────────────────────
    1. LOADER
@@ -19,6 +23,12 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
   const loader = document.getElementById('loader');
   const fill   = document.querySelector('.loader__bar-fill');
   if (!loader || !fill) return;
+
+  // Force the page to start at the very top, ignoring browser scroll restoration
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  window.scrollTo(0, 0);
 
   // Lock scroll while loading
   document.body.style.overflow = 'hidden';
@@ -61,6 +71,9 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
       loader.classList.add('loader--hidden');
       document.body.style.overflow = '';
 
+      // Tell the rest of the page the loader is gone — hero animation listens for this
+      window.dispatchEvent(new CustomEvent('loaderDone'));
+
       loader.addEventListener('transitionend', () => {
         loader.remove();
       }, { once: true });
@@ -71,6 +84,35 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 
 })();
 
+/* ─────────────────────────────────────────
+   1b. HERO ENTRANCE (GSAP)
+   — Plays once, right after the loader hides
+───────────────────────────────────────── */
+(function initHeroEntrance() {
+
+  const lines   = document.querySelectorAll('.hero__title-line');
+  const tagline = document.querySelector('.hero__tagline');
+  const taglineEn = document.querySelector('.hero__tagline-en');
+  const divider = document.querySelector('.hero__divider');
+  const sub    = document.querySelector('.hero__sub');
+
+  if (!lines.length) return;
+
+  // Hide everything before animating in (avoids flash of unstyled content)
+  gsap.set([...lines, tagline, taglineEn, divider, sub], { opacity: 0, y: 24 });
+
+  function playEntrance() {
+    gsap.timeline({ defaults: { ease: 'power3.out' } })
+      .to(lines, { opacity: 1, y: 0, duration: 0.9, stagger: 0.15 })
+      .to(tagline, { opacity: 1, y: 0, duration: 0.7 }, '-=0.3')
+      .to(taglineEn, { opacity: 1, y: 0, duration: 0.7 }, '-=0.4')
+      .to(divider, { opacity: 1, y: 0, duration: 0.5 }, '-=0.3')
+      .to(sub, { opacity: 1, y: 0, duration: 0.7 }, '-=0.2');
+  }
+
+  window.addEventListener('loaderDone', playEntrance, { once: true });
+
+})();
 
 /* ─────────────────────────────────────────
    2. THREE.JS HERO SCENE
@@ -92,7 +134,7 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
     alpha:     true,
   });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+  renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping         = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.1;
 
@@ -102,7 +144,7 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 
   const camera = new THREE.PerspectiveCamera(
     70,
-    canvas.offsetWidth / canvas.offsetHeight,
+    window.innerWidth / window.innerHeight,
     0.1,
     120
   );
@@ -252,8 +294,8 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 
   // ── Resize ────────────────────────────────────────
   function onResize() {
-    const w = canvas.offsetWidth;
-    const h = canvas.offsetHeight;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
 
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
@@ -264,6 +306,83 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
   }
 
   window.addEventListener('resize', onResize);
+  onResize();
+
+})();
+
+
+/* ─────────────────────────────────────────
+   2b. HERO SLIDESHOW
+───────────────────────────────────────── */
+(function initSlideshow() {
+
+  const slides    = document.querySelectorAll('.hero__slide');
+  const dots      = document.querySelectorAll('.hero__dot');
+  const bar       = document.querySelector('.hero__progress-bar');
+  const hero      = document.querySelector('.hero');
+
+  if (!slides.length) return;
+
+  const DURATION  = 4000;
+  let current     = 0;
+  let paused      = false;
+  let startTime   = null;
+  let rafId       = null;
+
+  function goTo(index) {
+    const prev = current;
+
+    slides[prev].classList.remove('active');
+    slides[prev].classList.add('exit');
+    dots[prev].classList.remove('active');
+
+    slides[index].classList.add('active');
+    dots[index].classList.add('active');
+
+    setTimeout(() => {
+      slides[prev].classList.remove('exit');
+    }, 900);
+
+    current   = index;
+    startTime = performance.now();
+    if (bar) { bar.style.transition = 'none'; bar.style.width = '0%'; }
+    requestAnimationFrame(tickBar);
+  }
+
+  function tickBar(now) {
+    if (paused) return;
+    if (!startTime) startTime = now;
+    const elapsed  = now - startTime;
+    const progress = Math.min(elapsed / DURATION, 1);
+
+    if (bar) {
+      bar.style.transition = `width ${DURATION}ms linear`;
+      bar.style.width      = (progress * 100) + '%';
+    }
+
+    if (progress < 1) {
+      rafId = requestAnimationFrame(tickBar);
+    } else {
+      goTo((current + 1) % slides.length);
+    }
+  }
+
+  // Dots click
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => goTo(i));
+  });
+
+  // Pause on hover
+  hero.addEventListener('mouseenter', () => { paused = true;  cancelAnimationFrame(rafId); });
+  hero.addEventListener('mouseleave', () => {
+    paused    = false;
+    startTime = performance.now();
+    rafId     = requestAnimationFrame(tickBar);
+  });
+
+  // Kick off
+  startTime = performance.now();
+  requestAnimationFrame(tickBar);
 
 })();
 
@@ -308,39 +427,58 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 /* ─────────────────────────────────────────
    4. SCROLL REVEAL
 ───────────────────────────────────────── */
+/* ─────────────────────────────────────────
+   4. SCROLL REVEAL (GSAP ScrollTrigger)
+───────────────────────────────────────── */
 (function initReveal() {
 
   const sections = document.querySelectorAll('.reveal-section');
   const items    = document.querySelectorAll('.reveal-item');
 
-  if (!('IntersectionObserver' in window)) {
+  if (!sections.length && !items.length) return;
+
+  // Fallback: if GSAP somehow didn't load, just show everything via the old CSS classes
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
     sections.forEach(el => el.classList.add('is-visible'));
     items.forEach(el    => el.classList.add('is-visible'));
     return;
   }
 
-  const opts = (threshold) => ({ threshold });
-
-  const sectionObs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('is-visible');
-        sectionObs.unobserve(e.target);
-      }
+  sections.forEach((el) => {
+    gsap.to(el, {
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 88%',
+      },
     });
-  }, opts(0.12));
+  });
 
-  const itemObs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('is-visible');
-        itemObs.unobserve(e.target);
-      }
+  // Group items by their parent so siblings (e.g. pricing cards, testimonials)
+  // stagger together instead of all firing on their own individual scroll position
+  const groups = new Map();
+  items.forEach((el) => {
+    const parent = el.parentElement;
+    if (!groups.has(parent)) groups.set(parent, []);
+    groups.get(parent).push(el);
+  });
+
+  groups.forEach((group) => {
+    gsap.to(group, {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: 'power3.out',
+      stagger: 0.12,
+      scrollTrigger: {
+        trigger: group[0],
+        start: 'top 90%',
+      },
     });
-  }, opts(0.15));
-
-  sections.forEach(el => sectionObs.observe(el));
-  items.forEach(el    => itemObs.observe(el));
+  });
 
 })();
 
@@ -348,40 +486,42 @@ import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js'
 /* ─────────────────────────────────────────
    5. STATS COUNTER
 ───────────────────────────────────────── */
+/* ─────────────────────────────────────────
+   5. STATS COUNTER (GSAP)
+───────────────────────────────────────── */
 (function initStats() {
 
   const numbers = document.querySelectorAll('.stats__number[data-target]');
   if (!numbers.length) return;
 
-  function easeOutQuart(t) {
-    return 1 - Math.pow(1 - t, 4);
-  }
-
-  function animateCounter(el) {
-    const target   = parseInt(el.dataset.target, 10);
-    const duration = 1800;
-    const start    = performance.now();
-
-    function tick(now) {
-      const progress = Math.min((now - start) / duration, 1);
-      el.textContent = Math.round(easeOutQuart(progress) * target).toLocaleString();
-      if (progress < 1) requestAnimationFrame(tick);
-      else el.textContent = target.toLocaleString();
-    }
-
-    requestAnimationFrame(tick);
-  }
-
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        animateCounter(e.target);
-        obs.unobserve(e.target);
-      }
+  // Fallback if GSAP didn't load — snap straight to final numbers
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+    numbers.forEach(el => {
+      el.textContent = parseInt(el.dataset.target, 10).toLocaleString();
     });
-  }, { threshold: 0.5 });
+    return;
+  }
 
-  numbers.forEach(el => obs.observe(el));
+  numbers.forEach((el) => {
+    const target = parseInt(el.dataset.target, 10);
+    const counter = { value: 0 };
+
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 85%',
+      once: true,
+      onEnter: () => {
+        gsap.to(counter, {
+          value: target,
+          duration: 1.8,
+          ease: 'power4.out',
+          onUpdate: () => {
+            el.textContent = Math.round(counter.value).toLocaleString();
+          },
+        });
+      },
+    });
+  });
 
 })();
 
